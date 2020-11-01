@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .light-container{
+      width: 400px;
+      height: 100px;
+      background: #ff9900;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .light-item{
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+    .red{
+      background: red;
+      filter: drop-shadow(2px 4px 6px red);
+    }
+    .yellow{
+      background: yellow;
+      filter: drop-shadow(2px 4px 6px yellow);
+    }
+    .green{
+      background: green;
+      filter: drop-shadow(2px 4px 6px green);
+    }
+    .unlight{
+      background: #cccccc;
+       filter: drop-shadow(2px 4px 6px #cccccc);
+    }
+  </style>
+</head>
+<body>
+  <div class='light-container'>
+    <div class='light-item red unlight'></div>
+    <div class='light-item yellow unlight'></div>
+    <div class='light-item green unlight'></div>
+    <button class='next'>next</button>
+  </div>
+</body>
+
+</html>
+<script>
+  var redDom = document.getElementsByClassName('red'),
+      yellowDom = document.getElementsByClassName('yellow'),
+      greenDom = document.getElementsByClassName('green');
+  function init() {
+    redDom[0].classList.add('unlight');
+    yellowDom[0].classList.add('unlight');
+    greenDom[0].classList.add('unlight');
+  }
+  function Red(){
+    init();
+    redDom[0].classList.remove('unlight');
+  };
+  function Yellow(){
+    init();
+    yellowDom[0].classList.remove('unlight');
+  };
+  function Green(){
+    init();
+    greenDom[0].classList.remove('unlight');
+  };
+  
+  // 原生
+  // setTimeout(() => {
+  //   Red()
+  // setTimeout(() => {
+  //   Yellow();
+  // setTimeout(() => {
+  //   Green();
+  // }, 5000);
+  // }, 10000);
+  // }, 2000);
+
+  //Promise
+  function sleep(wait) {
+    return new Promise((resolve,reject)=>{
+      setTimeout(resolve, wait);
+    });
+  }
+  // var go = () => {
+  //   Red()
+  //   sleep(1000).then(()=>{
+  //   Yellow();
+  //   return sleep(1000);
+  //   }).then(()=>{
+  //   Green();
+  //   return sleep(1000);
+  //   }).then(()=>{
+  //     go();
+  //   });
+  // }
+  // go();
+
+  //async
+  // go();
+  // async function go (){
+  //   while (true) {
+  //     await sleep(1000);
+  //     Red();
+  //     await sleep(1000);
+  //     Yellow();
+  //     await sleep(1000);
+  //     Green();
+  //   }
+  // }
+
+  //callback
+  // var happen =  (element, eventName) => {
+  //   return new Promise((resolve,reject) => {
+  //     element.addEventListener(eventName, resolve, {once:true});
+  //   })
+  // }
+  // go();
+  // async function go (){
+  // while (true) {
+  // Red();
+  // await happen(document.getElementsByClassName('next')[0],'click');
+  // Yellow();
+  // await happen(document.getElementsByClassName('next')[0],'click');
+  // Green();
+  // await happen(document.getElementsByClassName('next')[0],'click');
+  // }
+  // }
+
+  //generator
+  
+</script>
