@@ -84,17 +84,17 @@
       if(x < 0 || x >= 100 || y < 0 || y >= 100 ){//正常数据
         return;
       }
-      if(map[x*100 + y]){ //去重
+      if(map[y*100 + x]){ //去重
         return; 
       }
-      await sleep(30);
+      await sleep(5);
       map[y*100 + x] = 2;
       // document.getElementsByClassName('cell')[y*100 + x].style.backgroundColor = 'lightgreen';
       container.children[y*100 + x].style.backgroundColor = 'lightgreen';
       queue.push([x,y]);
     }
     while(queue.length){
-      let [x,y] = queue.shift();
+      let [x,y] = queue.pop();//pop unshift //push shift
       console.log(x,y);
       if(x == end[0] && y == end[1]){
         return true;
