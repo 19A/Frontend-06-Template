@@ -44,14 +44,72 @@
         cell.classList.add('cell');
         cell.innerText = pattern[i][j] == 2?'x':
                         pattern[i][j] == 1 ? 'o':'';
+        if(isWin()){
+          console.log(isWin());
+        }
         cell.addEventListener('click',()=>{move(i,j)})
         board.appendChild(cell);
       }
       board.appendChild(document.createElement('br'));
     }
   }
+  function isWin(){
+    //游戏判胜规则
+    //横向
+    for(var x=0; x<3; x++){
+      let flag = true;
+      for(var y=0; y<3; y++){
+        if(pattern[x][y] !== color){
+          flag = false;
+        }
+      }
+      if(flag){
+        return flag
+      }
+    }
+    //纵向
+    for(var x=0; x<3; x++){
+      let flag = true;
+      for(var y=0; y<3; y++){
+        if(pattern[y][x] !== color){
+          flag = false;
+        }
+      }
+      if(flag){
+        return flag
+      }
+    }
+    //正斜
+    {
+      let flag = true;
+      for(var y=0; y<3; y++){
+        if(pattern[y][y] !== color){
+           flag = false;
+        }
+      }
+      if(flag){
+        return flag
+      }
+    }
+    //负斜
+  {
+    let flag = true;
+      for(var y=0; y<3; y++){
+        if(pattern[y][2-y] !== color){
+          flag = false;
+        }
+      }
+      if(flag){
+        return flag
+      }
+  }
+  }
+
   function move(i,j) {
     pattern[i][j] = color;
+    if(isWin()){
+      color === 2 ? alert('结束！x获胜！'):alert('结束！o获胜!')
+    }
     color = 3 - color;
     show();
   }
