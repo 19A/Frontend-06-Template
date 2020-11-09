@@ -77,34 +77,73 @@
       }, wait);
     })
   }
+  //用于优化queue的数据结构
+  class Sorted{
+    constructor(data,compare){
+      this.data = data.slice();
+      this.compare = compare || ((a,b)=> a-b);//类似sort函数
+    }
+    take(){ 
+      let data = this.data;
+      if(!data.length) return
+      let min = data[0];
+      let minIndex = 0;
+      for(let i=0;i<data.length;i++){
+        if(this.compare(data[i],min)<0){
+          min = data[i];
+          minIndex = i;
+        }
+      }
+      data[minIndex] = data[data.length-1];
+      data.pop();
+      return min;
+    }
+    give(v){
+      this.data.push(v);
+    }
+  }
   //寻路
   async function path(map,start,end){
-    var queue = [start];
-    async function insert(x,y){
+    let table = Object.create(map);
+    let queue = [start];
+    async function insert(x,y,pre){
       if(x < 0 || x >= 100 || y < 0 || y >= 100 ){//正常数据
         return;
       }
-      if(map[y*100 + x]){ //去重
+      if(table[y*100 + x]){ //去重
         return; 
       }
-      await sleep(5);
-      map[y*100 + x] = 2;
+      // map[y*100 + x] = 2;
+      table[y*100 + x] = pre;
       // document.getElementsByClassName('cell')[y*100 + x].style.backgroundColor = 'lightgreen';
       container.children[y*100 + x].style.backgroundColor = 'lightgreen';
-      queue.push([x,y]);
+      queue.unshift([x,y]);
     }
     while(queue.length){
       let [x,y] = queue.pop();//pop unshift //push shift
       console.log(x,y);
       if(x == end[0] && y == end[1]){
-        return true;
+        let _path = [];
+        while(x!=start[0] || y!=start[1]){
+          _path.push(map[y*100+x]);
+          [x,y] = table[y*100+x];
+          await sleep(30);
+          container.children[y*100+x].style.backgroundColor='purple';
+        }
+        return _path;
+
       }
-      await insert(x-1,y);
-      await insert(x,y-1);
-      await insert(x+1,y);
-      await insert(x,y+1);
+      await insert(x-1,y,[x,y]);
+      await insert(x,y-1,[x,y]);
+      await insert(x+1,y,[x,y]);
+      await insert(x,y+1,[x,y]);
+
+      await insert(x-1,y-1,[x,y]);
+      await insert(x+1,y-1,[x,y]);
+      await insert(x-1,y+1,[x,y]);
+      await insert(x+1,y+1,[x,y]);
     }
-    return false;
+    return null;
   }
 </script>
 </html>
