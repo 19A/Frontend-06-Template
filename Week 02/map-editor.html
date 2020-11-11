@@ -105,7 +105,8 @@
   //寻路
   async function path(map,start,end){
     let table = Object.create(map);
-    let queue = [start];
+    // let queue = [start];
+    let queue = new Sorted([start],((a,b)=> distance(a)-distance(b)));
     async function insert(x,y,pre){
       if(x < 0 || x >= 100 || y < 0 || y >= 100 ){//正常数据
         return;
@@ -117,10 +118,17 @@
       table[y*100 + x] = pre;
       // document.getElementsByClassName('cell')[y*100 + x].style.backgroundColor = 'lightgreen';
       container.children[y*100 + x].style.backgroundColor = 'lightgreen';
-      queue.unshift([x,y]);
+      // queue.push([x,y]);
+      queue.give([x,y]);
     }
-    while(queue.length){
-      let [x,y] = queue.pop();//pop unshift //push shift
+
+    distance = (point) => {
+      return (point[0]-end[0])**2 + (point[1]-end[1])**2;
+    }
+
+    while(queue.data.length){
+      // let [x,y] = queue.shift();//pop unshift //push shift
+      let [x,y] = queue.take();
       console.log(x,y);
       if(x == end[0] && y == end[1]){
         let _path = [];
