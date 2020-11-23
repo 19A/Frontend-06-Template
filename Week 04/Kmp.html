@@ -1,0 +1,29 @@
+<script>
+  function getTable(source,pattern){
+    //计算table
+    let table = new Array(pattern.length).fill(0);
+    //abcdabce
+    let i = 1,  //start     
+        j = 0;  //到此 有几个 字符 已经重复！
+    while(i < pattern.length){
+      if(table[i] === table[j]){
+        ++i,++j;
+        table[i]=j; //记录
+      }else{
+        if(j > 0){
+          j = table[j]; //追朔
+        }else{
+          ++i;
+        }
+      }
+    }
+    //  a b c d a b c e
+    //  0 0 0 0 0 1 2 3
+    //  a a b a a a c
+    //  0 0 1 1 2 3 4 X
+    //  0 0 1 0 1 2 2 √
+
+    //匹配
+    return table;
+  }
+</script>
