@@ -20,10 +20,36 @@ KMP
   patten:abcdabce
   source:abcdabcdabdcex 
   关键点：  
-          a:以递进索引的方式截取出多个字符串，找出最长公共子串；
-          b:将模式串标记对应重复次数，返回对应数组（跳转表格）；
-          c:对比跳转表格和源串，不断回退求得 源串中的模式串。
-
+          a:
+          b:部分匹配表（Partial Match Table）；
+            PMT值的意义：字符串的前缀集合和后缀集合交集中最长元素的长度。
+            next数组：对自身进行匹配，以模式串的前缀为目标，当前的next值就是匹配
+                    成功的字符串长度。
+          初始化 i = 1，j = 0;
+            i
+          a b a b a b c a      next[2]=0; 
+            a b a b a b c a   
+            j
+              i
+          a b a b a b c a      
+              a b a b a b c a  next[3]=1;  
+              j
+                i
+          a b a b a b c a      
+              a b a b a b c a  next[4]=2; 
+                j
+                  i
+          a b a b a b c a      
+              a b a b a b c a  next[5]=3; 
+                    j
+          a b a b a b c a      
+              a b a b a b c a  next[6]=4; 
+                    j
+                      i                               i
+          a b a b a b c a                 a b a b a b c a      
+              a b a b a b c a                         a b a b a b c a
+                      j           =>                  j
+                      next[7]=0; 
 Wildcard（未知数）
   带通配符的字符串模式
 正则

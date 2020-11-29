@@ -4,9 +4,12 @@
     let table = new Array(pattern.length).fill(0);
     //abcdabce
     let i = 1,  //start     
-        j = 0;  //到此 有几个 字符 已经重复！
+        j = 0;  //到此 最大公共前后缀的长度！
+        //a b a b a b c a
+        //0 1 2 3 4 5 6 7
+        //0 0 1 2 3 4 0 1
     while(i < pattern.length){
-      if(table[i] === table[j]){
+      if(pattern[i] === pattern[j]){
         ++i,++j;
         table[i]=j; //记录
       }else{
@@ -16,14 +19,19 @@
           ++i;
         }
       }
+      console.log('i:',i,'j:',j);
     }
     //  a b c d a b c e
     //  0 0 0 0 0 1 2 3
+    //  0 0 0 0 0 1 2 3
     //  a a b a a a c
-    //  0 0 1 1 2 3 4 X
+    //          a a b a a a c
+    //  0 1 2 3 4 5 6 7 
     //  0 0 1 0 1 2 2 √
 
     //匹配
     return table;
   }
+ console.log(getTable('','abcdabce'))
+ console.log(getTable('','abababca'))
 </script>
