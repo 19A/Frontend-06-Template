@@ -6,7 +6,25 @@
   <title>Document</title>
 </head>
 <body>
-<div id='dragger' style="background: lightgreen;width: 100px;height: 100px;">
+<div id='container'>
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 
+  文本 文本 文本 文本 文本 文本 文本 文本 文本 文本
+</div>
+<div id='dragger' style="display:inline-block;background: lightgreen;width: 100px;height: 100px;">
 </body>
 
 <script>
@@ -19,15 +37,44 @@ dragger.addEventListener('mousedown',function(e){
     baseX = baseX+e.clientX-startX;
     baseY = baseY+e.clientY-startY;
     document.removeEventListener('mousemove',move);
-    document.removeEventListener('mousemove',up);
+    document.removeEventListener('mouseup',up);  // ???
    };
    let move = (event) => {
     // console.log(e)
-    dragger.style.transform = `translate(${baseX+event.clientX-startX}px,${baseY+event.clientY-startY}px)`;
-   }
+    // dragger.style.transform = `translate(${baseX+event.clientX-startX}px,${baseY+event.clientY-startY}px)`;
+    var nearest = getNearest(event.clientX,event.clientY);
+    nearest.insertNode(dragger);
+  }
   
   document.addEventListener('mousemove', move)
   document.addEventListener('mouseup', up);
 })
+
+  let ranges = [];
+  let container = document.getElementById("container");
+  for(let i = 0; i < container.childNodes[0].textContent.length; i++){
+    let range = document.createRange();
+    range.setStart(container.childNodes[0],i);
+    range.setEnd(container.childNodes[0],i);
+    console.log(range.getBoundingClientRect());
+    ranges.push(range);
+  }
+  var getNearest = (x, y) => {
+    let min = Infinity;
+    let nearest = null;
+    for(let range of ranges){
+      let rect = range.getBoundingClientRect();
+      let distance = (rect.x - x) ** 2 + (rect.y - y) ** 2;
+      if(distance < min){
+        nearest = range;
+        min = distance;
+      }
+    }
+    return nearest;
+  }
+  document.addEventListener("selectstart", function (event) {
+    event.preventDefault();
+  }
+  );
 </script>
 </html>
