@@ -42,3 +42,6 @@ Atom => Expression => Statement => Structure => Program(library/module/package)
 Atom 
  Grammer:Literal/Variable/Keywords/Whitespace/Line Terminator
  Runtime:Types/Execution Context
+ 
+Undefined Null String Number BooleanSymnol Object
+Number:
