@@ -20,7 +20,7 @@
     target:label
   
 简单语句
-  ExpressionStatement
+  ExpressionStatement（核心）
   EmptyStatement
   Debugger
   Throw
@@ -28,3 +28,10 @@
   Break
   Return
 复合语句
+  BlockStatement ({   })
+  If
+  Switch
+  Iteration(while /for in/of/awiat )
+  With
+  Labelled
+  TryState(try-catch-finally 区别于block) 注意：return不能打破try catch的执行
