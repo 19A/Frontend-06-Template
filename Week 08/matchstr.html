@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<script>
+//普通处理
+  function match(str) {
+    let foundA = false;
+    let foundB = false;
+    for (let c of str) {
+      if (c == 'a') {
+        foundA = true;
+      } else if (foundA && c == 'b') {
+        console.log(foundA);
+        return true
+      } else {
+        foundA = false;
+        foundB = false;
+      }
+  }
+}
+//使用状态机处理
+function match(str){
+    let state = start;
+	  for(let c of str){
+    	state = state(c);
+    }
+    return state = end;
+}
+var start = (c) => { return c==='a'? foundA:start;}
+var end = (c) => { return end }
+var foundA = (c) => { return c==='b'? foundB:start(c);}
+
+</script>
+</body>
+</html>
