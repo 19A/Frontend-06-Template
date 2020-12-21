@@ -9,3 +9,28 @@
       while(input){
         state = state(input);
       }
+
+ISO-OSI七层网络模型
+  应用
+  表示
+  会话
+      HTTP    require("http");
+  传输
+      TCP     require("net");
+  网络
+      Internet
+  数据链路
+  物理层
+      4G /5G /Wi-Fi
+  TCP与IP的一些基础知识
+
+  流      
+  端口（计算机网卡根据端口把接收数据包分给各个应用）
+    require("net");
+  包
+  IP地址（连入Internet的唯一标识）
+    node底层调用C++的 libnet/libpcap
+
+HTTP
+  Request:
+  Response:
