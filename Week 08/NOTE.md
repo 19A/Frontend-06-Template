@@ -34,3 +34,8 @@ ISO-OSI七层网络模型
 HTTP
   Request:
   Response:
+
+  第一步    设计一个HTTP类   content type是一个必要字段，要有默认值
+            body是KV格式    不同的content-type影响body的格式
+  第二步    在Request的构造器中收集必要信息，设计异步的send函数
+  第三步  

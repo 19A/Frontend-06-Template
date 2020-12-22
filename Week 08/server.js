@@ -4,8 +4,8 @@ http.createServer(function(request,response){
   request.on('error',(err)=>{
     console.log(err);
   }).on('data',(chunk)=>{
-    console.log(chunk);
-    body.push(chunk.toString());
+    console.log(chunk.toString());
+    body.push(chunk);
   }).on('end',()=>{
     body = Buffer.concat(body).toString();
     console.log('body:',body);

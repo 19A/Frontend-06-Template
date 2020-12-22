@@ -1,5 +1,16 @@
-const { resolve } = require("path");
+const net = require("net");
 
+class ResponseParser {
+  constructor() {}
+  receive(str) {
+    for (var i = 0; i < str.length; i++) {
+      this.receiveChar(str.charAt(i));
+    }
+  }
+  receiveChar(char) {
+
+  }
+}
 class Request{
   constructor(option){
     this.method = option.method || 'GET';
@@ -16,30 +27,62 @@ class Request{
       this.bodyText = JSON.stringify(this.body);
     }
     else if (this.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-      this.bodyText = Object.keys(this.body).map(key => `${key}=${encodeURIComponent(this.body[key])}`).join('&');
+      this.bodyText = Object.keys(this.body)
+          .map(key => `${key}=${encodeURIComponent(this.body[key])}`)
+          .join('&');
     }
     this.headers['Content-Length'] = this.bodyText.length;
   }
 
-  send() {
+  send(connection) {
     return new Promise((resolve,reject) => {
-      resolve();
+      const parser = new ResponseParser();
+      if(connection){
+        connect.write(this.toString())
+      }else{
+        connection = net.createConnection({
+          host:this.host,
+          port:this.port
+        },()=>{
+          connection.write(this.toString())
+        })
+      }
+      connection.on('data',(data)=>{
+        // console.log('data:',data.toString());
+        parser.receive(data.toString());
+        if(parser.isFinishid){
+          resolve(parser.response);
+          connection.end();
+        }
+        resolve();
+      });
+      connection.on('error',(err)=>{
+        reject(err);
+        connection.end();
+      });
     })
+  }
+  toString(){
+    return `${this.method} ${this.path} HTTP/1.1\r
+${Object.keys(this.headers).map(key => `${key}:${this.headers[key]}`).join(`\r\n`)}\r
+\r
+${this.bodyText}`
   }
 }
 void async function () {
   let request = new Request({
     method: 'GET',
-    host: '127.01.01.01',
-    port: '80',
+    host: '127.0.0.1',
+    port: '8088',
     headers: {
-      "Content-Type": 'application/json'
+      "Content-Type": 'application/json',
+      ['X-Foo2']: 'custom'
     },
     body: {
       name: 'zhub'
     }
   })
-  console.log(request);
+  // console.log("request",request);
   let response = await request.send();
-  console.log(response);
+  // console.log("response", response);
 }();
