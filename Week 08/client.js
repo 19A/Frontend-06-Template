@@ -1,5 +1,5 @@
 const net = require("net");
-
+const parser = require("./parser.js")
 class ResponseParser {
   constructor() {}
   receive(str) {
@@ -54,7 +54,7 @@ class Request{
           resolve(parser.response);
           connection.end();
         }
-        resolve();
+        resolve(data.toString());
       });
       connection.on('error',(err)=>{
         reject(err);
@@ -85,4 +85,5 @@ void async function () {
   // console.log("request",request);
   let response = await request.send();
   // console.log("response", response);
+  let dom = parser.parseHTML(response.body);//实际上应该异步分段处理
 }();
